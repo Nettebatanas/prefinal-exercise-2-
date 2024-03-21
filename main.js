@@ -1,85 +1,43 @@
+const btnInsertUpdate = document.getElementById("btnInsertUpdate");
+const btnClearItems = document.getElementById("btnClearItems");
+const btnClear = document.getElementById("btnClear");
+const btnSaveData = document.getElementById("btnSaveData");
+const tblRecords = document.getElementById("tblRecords");
+const sortCriteriaSelect = document.getElementById("sortCriteria");
+const sortOrderSelect = document.getElementById("sortOrder");
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="main.js"></script>
-    <title>Javascript 2</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
+let arrRecords = JSON.parse(localStorage.getItem('records')) || [];
+
+const tblTHsLabels = ["First Name", "Middle Name", "Last Name", "Age", "Action"];
+
+iterateRecords();
+
+if (arrRecords.length == 0) {
+    document.getElementById("status").style.display = "inline";
+    document.getElementById("status").innerHTML = "No Records...";
+} else {
+    document.getElementById("status").style.display = "none";
+}
+
+btnInsertUpdate.addEventListener("click", () => {
+    const inputTxt = document.getElementsByTagName("input");
+
+    if(btnInsertUpdate.value == "insert") {
+        for(const txt of inputTxt) {
+            if(txt.value.trim() == "") {
+                alert("Please complete all the text inputs!");
+                return;
+               }
         }
-    </style>
-</head>
-<body>
-    <h1>Javascript Web Output #2</h1>
-    <table id="tblInput">
-        <tr>
-            <td width="45%">
-                <label for="txtFname">First Name:</label>
-            </td>
-            <td>
-                <input type="text">
-            </td>
-        </tr>
-        <tr>
-            <td width="45%">
-                <label for="txtFname=">Middle Name:</label>
-            </td>
-            <td>
-                <input type="text">
-            </td>
-        </tr>
-        <tr>
-            <td width="45%">
-                <label for="txtFname">Last Name:</label>
-            </td>
-            <td>
-                <input type="text">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="">Age:</label>
-            </td>
-            <td>
-                <input type="number">
-            </td>
-        </tr>
 
-        <tr style="height:20px;">
-            <td></td>
-            <td style="padding-top: 15px;">
-                <button id="btnInsertUpdate" value="insert">Insert</button>
-                <button id="btnClear">Clear</button>
-            </td>
-        </tr>
-    </table>
-    <br>
-
-    <fieldset>
-        <legend>Records</legend>
-        <p id="status" style="color:red; font-size: 12px;"></p>
-        <table id="tblRecords" style="border-collapse: collapse; margin: auto;">
-        </table>
-    </fieldset>
-    <div>
-    <button id="btnClearItems" style="margin-top: 10px;">Clear Records</button>
-   
-        <label for="sortCriteria">Sort by:</label>
-        <select id="sortCriteria">
-            <option value="" style="margin-top: 10px;"> - - - - - - - - - - </option>
-            <option value="fname">First Name</option>
-            <option value="lname">Last Name</option>
-        </select>
-        <select id="sortOrder">
-            <option value="" style="margin-top: 10px;"> - - - - - - - - - - </option>
-            <option value="asc">A-Z</option>
-            <option value="desc">Z-A</option>
-        </select>
-        <button id="btnSaveData" style="margin-top: 10px;">Save to Local Storage</button>
-    </div>
-</body>
-</html>
+        let infoRecord = {
+            fname: inputTxt[0].value.trim(),
+            mname: inputTxt[1].value.trim(),
+            lname: inputTxt[2].value.trim(),
+            age:   parseInt(inputTxt[3].value.trim())      
+        };
+    
+        for(const txt of inputTxt) {
+            txt.value = "";
+        }
+      
